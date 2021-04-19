@@ -1,6 +1,7 @@
 import 'package:agr_/agape/agapeView.dart';
 import 'package:agr_/authentication/otherScreen/signUp/AgrSignUpView.dart';
 import 'package:agr_/authentication/signIn/AgrSignInView.dart';
+import 'package:agr_/flower/agrFlowerView.dart';
 import 'package:agr_/repo/AuthRepository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       home: RepositoryProvider(
         create: (context) => AuthRepository(),
-        child: AgapeView(),
+        child: AgrFlowerView(),
       ),
     );
   }
