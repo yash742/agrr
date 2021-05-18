@@ -18,7 +18,7 @@ class SignInBloc extends Bloc<SignInEvents, SignInState> {
     } else if (event is SignInSubmitted) {
       yield state.copyWith(formStatus: AgrFormSibmitting());
       try {
-        await authRepo.signIn();
+        await authRepo.signIn(password: '', useremail: "");
         yield state.copyWith(formStatus: AgrFormSucess());
       } catch (e) {
         yield state.copyWith(formStatus: AgrFormFaild());

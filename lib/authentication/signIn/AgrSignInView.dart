@@ -1,6 +1,7 @@
 import 'package:agr_/authentication/signIn/SignInBloc.dart';
 import 'package:agr_/authentication/signIn/SignInEvent.dart';
 import 'package:agr_/authentication/signIn/SignInState.dart';
+import 'package:agr_/cubit/agrAuthCubit.dart';
 import 'package:agr_/formsSubmissionStatus/AgrFormSubmissionStatus.dart';
 import 'package:agr_/repo/AuthRepository.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +19,12 @@ class AgrSignInView extends StatelessWidget {
                 SignInBloc(authRepo: context.read<AuthRepository>()),
             child: Stack(
                 alignment: Alignment.bottomCenter,
-                children: [_signInForm(), _termsOfUseButton()])),
+                children: [_signInForm(context), _termsOfUseButton()])),
       ),
     );
   }
 
-  Widget _signInForm() {
+  Widget _signInForm(BuildContext context) {
     return BlocListener<SignInBloc, SignInState>(
         listener: (context, state) {
           final formStatus = state.formStatus;
@@ -41,9 +42,9 @@ class AgrSignInView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _emailField(),
-                  _recoveryButton(),
+                  _recoveryButton(context),
                   _passwordField(),
-                  _showSignUpView(),
+                  _showSelectAccountTypeView(context),
                   _submitButton(),
                 ],
               ),
@@ -75,13 +76,16 @@ class AgrSignInView extends StatelessWidget {
     });
   }
 
-  Widget _recoveryButton() {
+  Widget _recoveryButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0.8),
       child: Row(
         children: [
           Spacer(),
-          TextButton(onPressed: () {}, child: Text("Forgot Password")),
+          TextButton(
+              onPressed: () =>
+                  context.read<AgrAuthCubit>().showAccountRecovery(),
+              child: Text("Forgot Password")),
         ],
       ),
     );
@@ -120,14 +124,17 @@ class AgrSignInView extends StatelessWidget {
     });
   }
 
-  Widget _showSignUpView() {
+  Widget _showSelectAccountTypeView(BuildContext context) {
     return Row(
       children: [
         Text(
           "create New agr account",
           style: TextStyle(color: Colors.black),
         ),
-        TextButton(onPressed: () {}, child: Text("SignUp"))
+        TextButton(
+            onPressed: () =>
+                context.read<AgrAuthCubit>().showAccountType(),
+            child: Text("Create "))
       ],
     );
   }

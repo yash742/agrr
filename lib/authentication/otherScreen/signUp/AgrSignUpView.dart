@@ -1,6 +1,7 @@
 import 'package:agr_/authentication/otherScreen/signUp/SignUpBloc.dart';
 import 'package:agr_/authentication/otherScreen/signUp/SignUpState.dart';
 import 'package:agr_/authentication/otherScreen/signUp/signUpEvent.dart';
+import 'package:agr_/cubit/agrAuthCubit.dart';
 
 import 'package:agr_/formsSubmissionStatus/AgrFormSubmissionStatus.dart';
 
@@ -18,12 +19,12 @@ class AgrSignUpView extends StatelessWidget {
             create: (context) => SignUpBloc(),
             child: Stack(
                 alignment: Alignment.bottomCenter,
-                children: [_signInForm(), _termsOfUseButton()])),
+                children: [_signInForm(context), _termsOfUseButton()])),
       ),
     );
   }
 
-  Widget _signInForm() {
+  Widget _signInForm(BuildContext context) {
     return BlocListener<SignUpBloc, SignUpState>(
         listener: (context, state) {
           final formStatus = state.formStatus;
@@ -49,7 +50,7 @@ class AgrSignUpView extends StatelessWidget {
                     height: 5,
                   ),
                   _passwordField(),
-                  _showSignInView(),
+                  _showSignInView(context),
                   _submitButton(),
                 ],
               ),
@@ -137,7 +138,7 @@ class AgrSignUpView extends StatelessWidget {
     });
   }
 
-  Widget _showSignInView() {
+  Widget _showSignInView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0),
       child: Row(
@@ -146,7 +147,9 @@ class AgrSignUpView extends StatelessWidget {
             "i am a agr user",
             style: TextStyle(color: Colors.black),
           ),
-          TextButton(onPressed: () {}, child: Text("Sign me In"))
+          TextButton(
+              onPressed: () => context.read<AgrAuthCubit>().showLogIn(),
+              child: Text("Sign me In"))
         ],
       ),
     );

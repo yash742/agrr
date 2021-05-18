@@ -1,3 +1,5 @@
+import 'package:image_picker/image_picker.dart';
+
 abstract class AgapeEvent {}
 
 class UserNameChanged extends AgapeEvent {
@@ -10,12 +12,13 @@ class UserDescriptionChanged extends AgapeEvent {
   UserDescriptionChanged({this.userDescription});
 }
 
+//it may be a navigator
 class UserNameEditClicked extends AgapeEvent {}
 
 class ChangeAvatarClicked extends AgapeEvent {}
 
 class OpenImagePicker extends AgapeEvent {
-  final imageSource; //ImageSource
+  final ImageSource imageSource;
   OpenImagePicker({this.imageSource});
 }
 
