@@ -1,0 +1,131 @@
+schema{
+    query:query 
+    mutation:mutation
+
+}
+
+type Query{
+
+    getImageUploadUrl(extension:String,contentType:String):AWSURL
+    getMyTimeLine(userId:ID!,limit:Int!,nextToken:String):TweetPage!
+    getMyProfile:MyProfile!
+    getProfile(screenName:String!):OthersProfile!
+    getTweets(userId:ID!,limit:Int!,nextToken:String):TweetPage!//pagination
+    getLiks(userId:ID!,limit:Int!,nextToken:String):TweetPage!
+    getFollower(userId:ID!,limit:Int!,nextToken:String):ProfilePage!
+    getFollowing(userId:ID!,limit:Int!,nextToken:String):ProfilePage!
+}
+type Mutation{
+    editMyProfile(newProfile:ProfileInput!):MyProfile!
+    tweet(text:String!):Tweet!
+    like(tweetId:ID!):Boolean!//dont need to return anything true or booean
+    like(tweetId:ID!):Boolean!
+    reTweet(tweetId:ID!):Boolean!
+    unRetweet(tweetId:ID!):Boolean!
+follow(tweetId:ID!):Boolean!
+    unFollow(tweetId:ID!):Boolean!
+    reply(tweetId:ID!,text:String!):Reply!
+
+}
+input ProfileInput{ name:String!
+imageUrl:AWSURL
+    bio:String
+    location:String
+    webSite:AWSURL
+    birthDate:AWSDATE}
+interface Iprofile{
+     id:ID!
+    name:String!
+    screenName:String!
+    imageUrl:AWSURL
+    bio:String
+    location:String
+    webSite:AWSURL
+    birthDate:AWSDATE
+    createdDate:AWSDateTime!
+    tweet:TweetPage!
+    followingCount:Int!
+    followerCount:Int!
+    tweetCount:Int!
+    likeCount:Int!
+}
+type MyProfile impliment Iprofile{
+    id:ID!
+    name:String!
+    screenName:String!
+    imageUrl:AWSURL
+    bio:String
+    location:String
+    webSite:AWSURL
+    birthDate:AWSDATE
+    createdDate:AWSDateTime!
+    tweet:TweetPage!
+    followingCount:Int!
+    followerCount:Int!
+    tweetCount:Int!
+    likeCount:Int!
+}interface Itweet{id:ID!
+profile:Iprofile!
+createdAt:AWSDateTime!}
+
+type Tweet impliment Itweet{
+    id:ID!
+    profile:Iprofile!
+    createdAt:AWSDateTime!
+    text:String!
+    replis:Int!
+    retweets:Int!
+    likes:Int!
+    liked:Boolean!
+    reTweeted:Boolean!
+
+
+}
+type Reply impliment Itweet{
+     id:ID!
+    profile:Iprofile!
+    inReplToTweet:Itweet!
+    inReplyToUsers:[Iprofile!]
+    createdAt:AWSDateTime!
+    text:String!
+    replis:Int!
+    retweets:Int!
+    likes:Int!
+    liked:Boolean!
+    reTweeted:Boolean!
+}
+type ReTweet impliment Itweet{
+    id:ID!
+profile:Iprofile!
+createdAt:AWSDateTime!
+ReTweetoF:Itweet!
+
+}
+type OtherProfile impliment Iprofile{
+    id:ID!
+    name:String!
+    screenName:String!
+    imageUrl:AWSURL
+    bio:String
+    location:String
+    webSite:AWSURL
+    birthDate:AWSDATE
+    createdDate:AWSDateTime!
+    tweet:TweetPage!
+    followingCount:Int!
+    followerCount:Int!
+    tweetCount:Int!
+    likeCount:Int!
+    following:Boolean!
+    followedBy:Boolean!
+}
+
+
+type TweetPage{
+    tweets:[Itweet!]
+    nextToken:String
+}
+type ProfilePage{
+    profiles:[Iprofile!]
+    nextToken:String
+}

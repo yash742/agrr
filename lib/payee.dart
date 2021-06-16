@@ -12,7 +12,7 @@ class Payee extends StatefulWidget {
 class _PayeeState extends State<Payee> {
   double costPrice = 10.0;
   int amount = 0;
-  String url;
+  String url; //the lambda url or we connect the lamda here
   @override
   void initState() {
     super.initState();
